@@ -1,0 +1,27 @@
+#
+# Makefile for IBM C Set++ 2.01
+# 最適化(/O+)をかけてはいけない
+#
+WARNING = /W3 /Weff /Wext /Wpro /Wpor /Wrea /Wret /Wund /Wuse
+CC = icc
+CFLAGS = /Ss /C+ /DIBMCSET 
+LD = link386
+
+.c.obj:
+	$(CC) $(CFLAGS) $(WARNING) $<
+
+filenova.exe: filenova.obj novaview.obj jstring.obj charcode.obj getkeyif.obj ea.obj unicode.obj # lfiles.obj
+# IBM-C Set++ 2.01でのメークには、lfiles.objは必要無い
+	$(LD) /PM:VIO filenova.obj novaview.obj jstring.obj charcode.obj getkeyif.obj ea.obj unicode.obj ,$@ ,nul , ,nul
+
+filenova.obj: filenova.h jstring.h getkeyif.h ea.h unicode.h Makefile 
+novaview.obj: filenova.h jstring.h charcode.h getkeyif.h unicode.h Makefile 
+jstring.obj:  jstring.h  Makefile 
+charcode.obj: charcode.h  Makefile 
+getkeyif.obj: getkeyif.h  Makefile 
+ea.obj:       ea.h Makefile
+#lfiles.obj:   lfiles.h lfsatype.h
+# IBM-C Set++ 2.01でのメークには、lfiles.objは必要無い
+unicode.obj:  unicode.h Makefile
+
+

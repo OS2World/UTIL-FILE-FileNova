@@ -1,0 +1,34 @@
+#
+# Makefile for emx 0.9d
+#
+
+#WARNING = -Wall
+CC = gcc
+CFLAGS = -Zomf -Zsys 
+
+OBJ = filenova.obj novaview.obj jstring.obj charcode.obj getkeyif.obj ea.obj unicode.obj lfiles.obj
+
+.SUFFIXES: .obj .exe
+
+.c.obj:
+	$(CC) $(CFLAGS) $(WARNING) -c $< -o $*.obj
+# gcc がデフォルトで出力するオブジェクトファイルの拡張子は .obj ではなく
+# .o なので、明示的に出力ファイル名 *.obj を指定する必要があります。
+
+filenova.exe: $(OBJ)
+	$(CC) $(CFLAGS) -o filenova.exe $(OBJ)
+
+
+filenova.obj: filenova.h jstring.h getkeyif.h lfiles.h unicode.h
+novaview.obj: filenova.h jstring.h charcode.h getkeyif.h lfiles.h lfsatype.h unicode.h
+jstring.obj:  jstring.h
+charcode.obj: charcode.h
+getkeyif.obj: getkeyif.h  
+ea.obj: ea.h  
+lfiles.obj:   lfiles.c lfiles.h lfsatype.h
+unicode.obj:  unicode.h Makefile
+
+clean:
+	rm -rf *.obj *.exe
+
+
